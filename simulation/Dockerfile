@@ -12,7 +12,7 @@ RUN --mount=type=cache,target=/usr/local/cargo/git/db \
     --mount=type=cache,target=/usr/local/cargo/registry/index \
     RUSTFLAGS="--cfg wasmedge --cfg tokio_unstable" \
     cargo build --bin $BIN_TARGET --target wasm32-wasi --release
-RUN chmod a+x ./target/wasm32-wasi/release/$BIN_TARGET.wasm
+RUN chmod +x ./target/wasm32-wasi/release/$BIN_TARGET.wasm
 
 FROM scratch AS server
 ARG BIN_TARGET

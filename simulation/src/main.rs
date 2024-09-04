@@ -50,9 +50,9 @@ impl Canvas for ConsoleCanvas {
           OFF_COLOUR => b" . ",
           _ => unreachable!(),
         };
-        buf.write(repr).unwrap();
+        let _ = buf.write(repr);
       }
-      buf.write(b"\n").unwrap();
+      let _ = buf.write(b"\n");
     }
   }
 }
@@ -179,7 +179,10 @@ impl World {
     }
   }
 
-  pub fn random<R: Rng>(width: usize, height: usize, rng: &mut R) -> Self {
+  pub fn random<R>(width: usize, height: usize, rng: &mut R) -> Self
+  where
+    R: Rng,
+  {
     let mut world = World::new(width, height);
     let init_length = (world.height * world.width) / 2;
     for _ in 0..init_length {
@@ -294,12 +297,12 @@ pub fn main() {
     current_map.next_generation(&mut canvas);
     if render {
       print!("\x1B[2J\x1B[1;1H");
-      println!("Generation: {}", generation);
+      println!("Generation: {generation}");
       canvas.render();
     }
-    if generation > 50 {
+    if generation > 40 {
       break;
     }
   }
-  println!("Total generations: {}", generation);
+  println!("Total generations: {generation}");
 }
