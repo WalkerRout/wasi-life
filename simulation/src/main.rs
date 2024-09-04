@@ -185,7 +185,7 @@ impl World {
     for _ in 0..init_length {
       let i = rng.gen_range(0..world.height);
       let j = rng.gen_range(0..world.width);
-      if world.cell_state(i, j) == 0 {
+      if !world.cells[i * world.width + j].is_alive() {
         world.set_cell(i, j);
       }
     }
@@ -260,11 +260,6 @@ impl World {
         }
       }
     }
-  }
-
-  #[inline]
-  fn cell_state(&self, i: usize, j: usize) -> u8 {
-    self.cells[i * self.width + j].is_alive() as u8
   }
 
   #[inline]
