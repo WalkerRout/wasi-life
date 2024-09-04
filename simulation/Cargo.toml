@@ -11,6 +11,8 @@ path = "src/main.rs"
 rand = "0.8.5"
 
 [profile.release]
-opt-level = 'z'
 lto = true
+strip = true
+panic = "abort"
+opt-level = 'z'
 codegen-units = 1

@@ -140,7 +140,7 @@ impl Cell {
   #[inline]
   pub fn try_decrement(&mut self) -> bool {
     let neighbour_count = self.neighbours().get();
-    if neighbour_count < NeighbourCount::MAX {
+    if neighbour_count > NeighbourCount::MIN {
       *self = Self((self.0 & 0xe1) | ((neighbour_count - 1) << 1));
       true
     } else {
@@ -197,7 +197,7 @@ impl World {
     Co: ProductSingletonCandidate<Co, Co>,
     Ca: Canvas<Colour = Co>,
   {
-    self.temp_cells.copy_from_slice(&self.cells);
+    self.temp_cells.clone_from_slice(&self.cells);
     for i in 0..self.height {
       let mut j = 0;
       while j < self.width {
@@ -214,10 +214,12 @@ impl World {
             self.clear_cell(i, j);
             canvas.draw_pixel(i, j, Co::SND);
           }
-        } else if count == 3 {
+        } else {
           // cell inactive; turn on if has exactly 3 neighbours
-          self.set_cell(i, j);
-          canvas.draw_pixel(i, j, Co::FST);
+          if count == 3 {
+            self.set_cell(i, j);
+            canvas.draw_pixel(i, j, Co::FST);
+          }
         }
         j += 1;
       }
@@ -235,7 +237,8 @@ impl World {
         if i_offset == 0 && j_offset == 0 {
           continue;
         }
-        // update neighbours
+        // update neighbours; because we change the neighbours in place, we rely on self
+        // being up to date with the current context -> cannot use ping-pong buffers for cells and temp_cells
         if let Some((i, j)) = self.is_valid_position(i as isize + i_offset, j as isize + j_offset) {
           self.cells[i * w + j].try_increment();
         }
