@@ -1,5 +1,5 @@
 # wasi-life
-Game of Life compiled to for wasm32-wasi target and run on Docker w/ WasmEdge
+Game of Life compiled for wasm32-wasi target and run on Docker w/ WasmEdge
 
 Stupidly small docker images
 
