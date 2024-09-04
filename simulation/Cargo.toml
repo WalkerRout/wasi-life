@@ -1,0 +1,16 @@
+[package]
+name = "simulation"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "wasmedge_life"
+path = "src/main.rs"
+
+[dependencies]
+rand = "0.8.5"
+
+[profile.release]
+opt-level = 'z'
+lto = true
+codegen-units = 1

@@ -1,0 +1,9 @@
+services:
+  simulation:
+    container_name: simulation
+    platform: wasi/wasm
+    build:
+      context: simulation/
+      args:
+        BIN_TARGET: wasmedge_life # the target binary to build
+    runtime: io.containerd.wasmedge.v1
