@@ -242,7 +242,7 @@ impl World {
         }
         // update neighbours; because we change the neighbours in place, we rely on self
         // being up to date with the current context -> cannot use ping-pong buffers for cells and temp_cells
-        if let Some((i, j)) = self.is_valid_position(i as isize + i_offset, j as isize + j_offset) {
+        if let Some((i, j)) = self.as_valid_position(i as isize + i_offset, j as isize + j_offset) {
           self.cells[i * w + j].try_increment();
         }
       }
@@ -261,7 +261,7 @@ impl World {
           continue;
         }
         // update neighbours
-        if let Some((i, j)) = self.is_valid_position(i as isize + i_offset, j as isize + j_offset) {
+        if let Some((i, j)) = self.as_valid_position(i as isize + i_offset, j as isize + j_offset) {
           self.cells[i * w + j].try_decrement();
         }
       }
@@ -269,7 +269,7 @@ impl World {
   }
 
   #[inline]
-  fn is_valid_position(&self, neighbour_i: isize, neighbour_j: isize) -> Option<(usize, usize)> {
+  fn as_valid_position(&self, neighbour_i: isize, neighbour_j: isize) -> Option<(usize, usize)> {
     if neighbour_i < 0
       || neighbour_i >= self.height as isize
       || neighbour_j < 0
